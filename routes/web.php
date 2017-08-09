@@ -11,4 +11,5 @@
 |
 */
 
-Route::get('/', 'PostsController@index')->middleware('facebook.user.auth');
+Route::get('/', 'HomeController@index')->name('home')->middleware('facebook.user.auth');
+Route::get('/login', 'LoginController@index')->name('login');
