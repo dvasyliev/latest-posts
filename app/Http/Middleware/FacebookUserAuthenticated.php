@@ -30,27 +30,16 @@ class FacebookUserAuthenticated
             $helper->getPersistentDataHandler()->set('state', $request->get('state'));
         }
 
-        // Set Access Token
-        $accessToken = $request->session()->exists('facebook_access_token')
-            ? $request->session()->get('facebook_access_token')
-            : $helper->getAccessToken();
+        // Get Access Token
+        $accessToken = $helper->getAccessToken();
 
         // Redirect to login page
         if(!isset($accessToken)):
             return redirect()->route('login');
         endif;
 
-        // Generate Default Access Token
-        if(!$request->session()->exists('facebook_access_token')):
-            $oAuth2Client = $this->fb->getOAuth2Client();
-            $longLivedAccessToken = $oAuth2Client->getLongLivedAccessToken((string)$accessToken);
-            $request->session()->push('facebook_access_token', (string)$longLivedAccessToken);
-        endif;
-
-        // Set Default Access Token
-        $this->fb->setDefaultAccessToken(
-            $request->session()->get('facebook_access_token')
-        );
+        // Save Access Token to session
+        $request->session()->push('facebook_access_token', (string) $accessToken);
 
         // Redirect to back
         if($request->has('code')):

@@ -29,6 +29,8 @@ class FacebookServiceProvider extends ServiceProvider
             return new Facebook(array(
                 'app_id' => env('FACEBOOK_APP_ID'),
                 'app_secret' => env('FACEBOOK_APP_SECRET'),
+                'default_graph_version' => 'v2.10',
+                'default_access_token' => 'FACEBOOK_APP_DEFAULT_ACCESS_TOKEN',
             ));
         });
     }
